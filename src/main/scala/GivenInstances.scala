@@ -13,6 +13,8 @@ object GivenInstances:
     def apply[A](using parser: StringParser[A]): StringParser[A] = parser
 
     private def baseParser[A](f: String => Try[A]): StringParser[A] = new StringParser[A] {
+      logger.debug(">>> Entering baseParser(f={})", f)
+      logger.debug(">>> Entering apply(parser={})", parser)
       override def parse(s: String): Try[A] = f(s)
     }
 
@@ -20,14 +22,19 @@ object GivenInstances:
     given intParser: StringParser[Int] = baseParser(s => Try(s.toInt))
 
     given optionParser[A](using parser: => StringParser[A]): StringParser[Option[A]] = new StringParser[Option[A]] {
+      logger.debug(">>> Entering parse(s={})", s)
       override def parse(s: String): Try[Option[A]] = s match
         case "" => Success(None) // implicit parser not used.
-        case str => parser.parse(str).map(x => Some(x)) // implicit parser is evaluated at here
+        case str =>
+          logger.debug("<<< Exiting parse(s={})", s)
+          parser.parse(str).map(x => Some(x)) // implicit parser is evaluated at here
     }
 
   def test(): Unit =
+    logger.debug(">>> Entering test()")
     println(summon[StringParser[Option[Int]]].parse("21"))
     println(summon[StringParser[Option[Int]]].parse(""))
     println(summon[StringParser[Option[Int]]].parse("21a"))
+    logger.debug("<<< Exiting test()")
     println(summon[StringParser[Option[Int]]](using StringParser.optionParser[Int]).parse("42"))
 

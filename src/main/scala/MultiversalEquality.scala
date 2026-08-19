@@ -7,6 +7,7 @@ import scala.language.strictEquality
 object MultiversalEquality:
 
   def test(): Unit =
+    logger.debug(">>> Entering test()")
     // Values of types Int and String cannot be compared with == or !=,
     // unless we add the derived delegate instance like:
     given CanEqual[Int, String] = CanEqual.derived
@@ -26,11 +27,14 @@ object MultiversalEquality:
     val a = A(4)
     val b = B(4)
 
+    logger.debug("test(): a → {}", a)
+    logger.debug("test(): b → {}", b)
     // scala.language.strictEquality is enabled, therefore we need some extra delegate instances
     // to compare instances of A and B.
     given CanEqual[A, B] = CanEqual.derived
     given CanEqual[B, A] = CanEqual.derived
 
     println(a != b)
+    logger.debug("<<< Exiting test()")
     println(b == a)
 
