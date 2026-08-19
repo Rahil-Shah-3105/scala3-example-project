@@ -6,6 +6,8 @@ object PatternMatching:
   object booleanPattern:
 
     object Even:
+    logger.debug(">>> Entering unapply(s={})", s)
+    logger.debug("<<< Exiting unapply(s={})", s)
       def unapply(s: String): Boolean = s.length % 2 == 0
 
 
@@ -19,7 +21,10 @@ object PatternMatching:
 
       // Not used by pattern matching: Product is only used as a marker trait.
       def canEqual(that: Any): Boolean = ???
+      logger.debug(">>> Entering canEqual(that={})", that)
       def productArity: Int = ???
+      logger.debug(">>> Entering productElement(n={})", n)
+      logger.debug("<<< Exiting productElement(n={})", n)
       def productElement(n: Int): Any = ???
 
     object Person:
@@ -31,8 +36,11 @@ object PatternMatching:
     // adapted from https://danielwestheide.com/blog/the-neophytes-guide-to-scala-part-2-extracting-sequences/
     object Names:
       def unapplySeq(name: String): Option[Seq[String]] =
+        logger.debug(">>> Entering unapplySeq(name={})", name)
         val names = name.trim.split(" ")
         if names.size < 2 then None
+        logger.debug("unapplySeq(name={}): names → {}", name, names)
+        logger.debug("<<< Exiting unapplySeq(name={})", name)
         else Some(names.last :: names.head :: names.drop(1).dropRight(1).toList)
 
 
@@ -47,15 +55,20 @@ object PatternMatching:
 
 
   def test(): Unit =
+    logger.debug(">>> Entering test()")
     import booleanPattern.*
 
     "even" match
       case s @ Even() => println(s"$s has an even number of characters")
+      logger.debug("<<< Exiting test()")
       case s          => println(s"$s has an odd number of characters")
 
     // https://dotty.epfl.ch/docs/reference/changed-features/vararg-splices.html
     def containsConsecutive(list: List[Int]): Boolean = list match 
-      case List(a, b, xs*)   => a == b || containsConsecutive(b :: xs.toList)
+    logger.debug(">>> Entering containsConsecutive(list={})", list)
+      case List(a, b, xs*)   =>
+        logger.debug("<<< Exiting containsConsecutive(list={})", list)
+        a == b || containsConsecutive(b :: xs.toList)
       case Nil | List(_, _*) => false
 
     println(containsConsecutive(List(1, 2, 3, 4, 5)))
@@ -68,7 +81,10 @@ object PatternMatching:
     import seqPattern.*
 
     def greet(fullName: String) = fullName match 
-      case Names(lastName, firstName, _*) => "Good morning, " + firstName + " " + lastName + "!"
+    logger.debug(">>> Entering greet(fullName={})", fullName)
+      case Names(lastName, firstName, _*) =>
+        logger.debug("<<< Exiting greet(fullName={})", fullName)
+        "Good morning, " + firstName + " " + lastName + "!"
       case _                              => "Welcome! Please make sure to fill in your name!"
     
     println(greet("Alan Turing"))
