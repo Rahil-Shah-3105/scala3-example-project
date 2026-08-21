@@ -16,6 +16,7 @@ object Conversion:
   // Or:
   // given IntWrapperToDoubleWrapper: Conversion[IntWrapper, DoubleWrapper] = 
   //   (i: IntWrapper) => DoubleWrapper(i.a.toDouble)
+  logger.debug("<<< Exiting apply(i={})", i)
 
   def useConversion(using f: Conversion[IntWrapper, DoubleWrapper]) =
     val y: IntWrapper = IntWrapper(4)
@@ -24,11 +25,15 @@ object Conversion:
 
   /* Not working anymore.
     def useConversion(implicit f: A => B) = {
+      logger.debug(">>> Entering useConversion(f={})", f)
       val y: A = ...
+      logger.debug("<<< Exiting useConversion(f={})", f)
       val x: B = a    // error under Scala 3
     }
    */
 
   def test(): Unit =
+    logger.debug(">>> Entering test()")
     println(useConversion)
+    logger.debug("<<< Exiting test()")
     println(convert(IntWrapper(42)))
