@@ -18,12 +18,16 @@ object UnionTypes:
     if b == 0 then DivisionByZero("DivisionByZeroException") else Success(a / b)
 
   private def either(division: Division) = division match
-    case DivisionByZero(m) => Left(m)
+    case DivisionByZero(m) =>
+      logger.debug("<<< Exiting either(division={})", division)
+      Left(m)
     case Success(d)        => Right(d)
 
   def test(): Unit =
+    logger.debug(">>> Entering test()")
     val divisionResultSuccess: DivisionResult = safeDivide(4, 2)
 
+    logger.debug("test(): divisionResultSuccess → {}", divisionResultSuccess)
     // commutative
     val divisionResultFailure: Success | DivisionByZero = safeDivide(4, 0)
 
@@ -36,5 +40,6 @@ object UnionTypes:
     val list: Cons[Int] | Empty.type = Cons(1, Cons(2, Cons(3, Empty)))
     val emptyList: Empty.type | Cons[Any] = Empty
     println(list)
+    logger.debug("<<< Exiting test()")
     println(emptyList)
 
