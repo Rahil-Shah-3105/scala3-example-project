@@ -4,14 +4,21 @@ import scala.language.implicitConversions
   * Conversions: https://dotty.epfl.ch/docs/reference/contextual/conversions.html
   */
 object Conversion:
+private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
 
   case class IntWrapper(a: Int) extends AnyVal
   case class DoubleWrapper(b: Double) extends AnyVal
 
-  def convert[T, U](x: T)(using converter: Conversion[T, U]): U = converter(x)
+  def convert[T, U](x: T)(using converter: Conversion[T, U]): U = {
+      logger.error(">>> Entering convert(x={})", x)
+      converter(x)
+  }
 
   given IntWrapperToDoubleWrapper: Conversion[IntWrapper, DoubleWrapper] = new Conversion[IntWrapper, DoubleWrapper] {
-    override def apply(i: IntWrapper): DoubleWrapper = DoubleWrapper(i.a.toDouble)
+    override def apply(i: IntWrapper): DoubleWrapper = {
+        logger.error(">>> Entering apply(i={})", i)
+        DoubleWrapper(i.a.toDouble)
+    }
   }
   // Or:
   // given IntWrapperToDoubleWrapper: Conversion[IntWrapper, DoubleWrapper] = 

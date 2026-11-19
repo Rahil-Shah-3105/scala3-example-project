@@ -2,9 +2,13 @@
   * Structural Types: https://dotty.epfl.ch/docs/reference/changed-features/structural-types.html
   */
 object StructuralTypes:
+private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
 
   case class Record(elems: (String, Any)*) extends Selectable:
-    def selectDynamic(name: String): Any = elems.find(_._1 == name).get._2
+    def selectDynamic(name: String): Any = {
+        logger.error(">>> Entering selectDynamic(name={})", name)
+        elems.find(_._1 == name).get._2
+    }
 
   type Person = Record {
     val name: String

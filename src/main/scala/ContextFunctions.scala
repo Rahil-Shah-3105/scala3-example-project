@@ -7,15 +7,22 @@ import scala.util.Try
   *  - https://www.scala-lang.org/blog/2016/12/07/implicit-function-types.html
   */
 object ContextFunctions:
+private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
 
   object context:
     // type alias Contextual
     type Contextual[T] = ExecutionContext ?=> T
 
     // sum is expanded to sum(x, y)(ctx)
-    def asyncSum(x: Int, y: Int): Contextual[Future[Int]] = Future(x + y)
+    def asyncSum(x: Int, y: Int): Contextual[Future[Int]] = {
+        logger.error(">>> Entering asyncSum(x={},y={})", x, y)
+        Future(x + y)
+    }
 
-    def asyncMult(x: Int, y: Int)(using ctx: ExecutionContext) = Future(x * y)
+    def asyncMult(x: Int, y: Int)(using ctx: ExecutionContext) = {
+        logger.error(">>> Entering asyncMult(x={},y={})", x, y)
+        Future(x * y)
+    }
 
   object parse:
 

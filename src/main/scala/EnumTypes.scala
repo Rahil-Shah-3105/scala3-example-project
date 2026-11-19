@@ -2,6 +2,7 @@
   * Enum Types: https://dotty.epfl.ch/docs/reference/enums/adts.html
   */
 object  EnumTypes:
+private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
 
   enum ListEnum[+A]: 
     case Cons(h: A, t: ListEnum[A])
@@ -11,7 +12,10 @@ object  EnumTypes:
   enum Planet(mass: Double, radius: Double):
     private final val G = 6.67300E-11
     def surfaceGravity = G * mass / (radius * radius)
-    def surfaceWeight(otherMass: Double) =  otherMass * surfaceGravity
+    def surfaceWeight(otherMass: Double) = {
+        logger.error(">>> Entering surfaceWeight(otherMass={})", otherMass)
+        otherMass * surfaceGravity
+    }
 
     case Mercury extends Planet(3.303e+23, 2.4397e6)
     case Venus   extends Planet(4.869e+24, 6.0518e6)

@@ -4,15 +4,20 @@ import scala.util.{Success, Try}
   * Implied Instances: https://dotty.epfl.ch/docs/reference/contextual/givens.html
   */
 object GivenInstances:
+private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
 
   sealed trait StringParser[A]:
     def parse(s: String): Try[A]
 
   object StringParser:
 
-    def apply[A](using parser: StringParser[A]): StringParser[A] = parser
+    def apply[A](using parser: StringParser[A]): StringParser[A] = {
+        logger.error(">>> Entering apply(parser={})", parser)
+        parser
+    }
 
     private def baseParser[A](f: String => Try[A]): StringParser[A] = new StringParser[A] {
+      logger.warn("<<< Exiting baseParser(f={})", f)
       override def parse(s: String): Try[A] = f(s)
     }
 

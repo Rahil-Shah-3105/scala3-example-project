@@ -2,13 +2,17 @@
   * Trait Parameters: https://dotty.epfl.ch/docs/reference/other-new-features/trait-parameters.html
   */
 object TraitParams:
+private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
 
   trait Base(val msg: String)
   class A extends Base("Hello")
   class B extends Base("Dotty!")
 
   // Union types only exist in Scala 3, so there's no chance that this will accidentally be compiled with Scala 2
-  private def printMessages(msgs: (A | B)*) = println(msgs.map(_.msg).mkString(" "))
+  private def printMessages(msgs: (A | B)*) = {
+      logger.error(">>> Entering printMessages(msgs={})", msgs)
+      println(msgs.map(_.msg).mkString(" "))
+  }
 
   def test(): Unit =
     printMessages(new A, new B)

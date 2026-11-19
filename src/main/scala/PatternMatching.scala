@@ -2,11 +2,15 @@
   * Pattern Matching: https://dotty.epfl.ch/docs/reference/changed-features/pattern-matching.html
   */
 object PatternMatching:
+private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
 
   object booleanPattern:
 
     object Even:
-      def unapply(s: String): Boolean = s.length % 2 == 0
+      def unapply(s: String): Boolean = {
+          logger.error(">>> Entering unapply(s={})", s)
+          s.length % 2 == 0
+      }
 
 
   object productPattern:
@@ -18,12 +22,21 @@ object PatternMatching:
       def _2 = name
 
       // Not used by pattern matching: Product is only used as a marker trait.
-      def canEqual(that: Any): Boolean = ???
+      def canEqual(that: Any): Boolean = {
+          logger.error(">>> Entering canEqual(that={})", that)
+          ???
+      }
       def productArity: Int = ???
-      def productElement(n: Int): Any = ???
+      def productElement(n: Int): Any = {
+          logger.error(">>> Entering productElement(n={})", n)
+          ???
+      }
 
     object Person:
-      def unapply(a: (String, Int)): Person = Person(a._1, a._2)
+      def unapply(a: (String, Int)): Person = {
+          logger.error(">>> Entering unapply(a={})", a)
+          Person(a._1, a._2)
+      }
 
 
   object seqPattern:
@@ -43,7 +56,10 @@ object PatternMatching:
       def isEmpty = name.isEmpty
 
     object Name:
-      def unapply(s: String): Name = Name(s)
+      def unapply(s: String): Name = {
+          logger.error(">>> Entering unapply(s={})", s)
+          Name(s)
+      }
 
 
   def test(): Unit =
