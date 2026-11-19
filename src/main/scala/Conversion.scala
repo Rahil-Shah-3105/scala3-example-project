@@ -11,12 +11,14 @@ private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
 
   def convert[T, U](x: T)(using converter: Conversion[T, U]): U = {
       logger.error(">>> Entering convert(x={})", x)
+      logger.warn("<<< Exiting convert(x={})", x)
       converter(x)
   }
 
   given IntWrapperToDoubleWrapper: Conversion[IntWrapper, DoubleWrapper] = new Conversion[IntWrapper, DoubleWrapper] {
     override def apply(i: IntWrapper): DoubleWrapper = {
         logger.error(">>> Entering apply(i={})", i)
+        logger.warn("<<< Exiting apply(i={})", i)
         DoubleWrapper(i.a.toDouble)
     }
   }

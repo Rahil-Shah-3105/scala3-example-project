@@ -13,6 +13,7 @@ private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
 
     def apply[A](using parser: StringParser[A]): StringParser[A] = {
         logger.error(">>> Entering apply(parser={})", parser)
+        logger.warn("<<< Exiting apply(parser={})", parser)
         parser
     }
 

@@ -11,6 +11,7 @@ private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
   // Union types only exist in Scala 3, so there's no chance that this will accidentally be compiled with Scala 2
   private def printMessages(msgs: (A | B)*) = {
       logger.error(">>> Entering printMessages(msgs={})", msgs)
+      logger.warn("<<< Exiting printMessages(msgs={})", msgs)
       println(msgs.map(_.msg).mkString(" "))
   }
 

@@ -7,6 +7,7 @@ private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
   case class Record(elems: (String, Any)*) extends Selectable:
     def selectDynamic(name: String): Any = {
         logger.error(">>> Entering selectDynamic(name={})", name)
+        logger.warn("<<< Exiting selectDynamic(name={})", name)
         elems.find(_._1 == name).get._2
     }
 

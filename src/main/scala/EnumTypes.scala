@@ -14,6 +14,7 @@ private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
     def surfaceGravity = G * mass / (radius * radius)
     def surfaceWeight(otherMass: Double) = {
         logger.error(">>> Entering surfaceWeight(otherMass={})", otherMass)
+        logger.warn("<<< Exiting surfaceWeight(otherMass={})", otherMass)
         otherMass * surfaceGravity
     }
 
