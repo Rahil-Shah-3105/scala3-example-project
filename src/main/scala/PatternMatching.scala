@@ -9,6 +9,7 @@ private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
     object Even:
       def unapply(s: String): Boolean = {
           logger.error(">>> Entering unapply(s={})", s)
+          logger.warn("<<< Exiting unapply(s={})", s)
           s.length % 2 == 0
       }
 
@@ -24,17 +25,20 @@ private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
       // Not used by pattern matching: Product is only used as a marker trait.
       def canEqual(that: Any): Boolean = {
           logger.error(">>> Entering canEqual(that={})", that)
+          logger.warn("<<< Exiting canEqual(that={})", that)
           ???
       }
       def productArity: Int = ???
       def productElement(n: Int): Any = {
           logger.error(">>> Entering productElement(n={})", n)
+          logger.warn("<<< Exiting productElement(n={})", n)
           ???
       }
 
     object Person:
       def unapply(a: (String, Int)): Person = {
           logger.error(">>> Entering unapply(a={})", a)
+          logger.warn("<<< Exiting unapply(a={})", a)
           Person(a._1, a._2)
       }
 

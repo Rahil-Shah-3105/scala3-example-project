@@ -16,11 +16,13 @@ private val logger = org.slf4j.LoggerFactory.getLogger(getClass)
     // sum is expanded to sum(x, y)(ctx)
     def asyncSum(x: Int, y: Int): Contextual[Future[Int]] = {
         logger.error(">>> Entering asyncSum(x={},y={})", x, y)
+        logger.warn("<<< Exiting asyncSum(x={},y={})", x, y)
         Future(x + y)
     }
 
     def asyncMult(x: Int, y: Int)(using ctx: ExecutionContext) = {
         logger.error(">>> Entering asyncMult(x={},y={})", x, y)
+        logger.warn("<<< Exiting asyncMult(x={},y={})", x, y)
         Future(x * y)
     }
 
